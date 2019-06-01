@@ -5,6 +5,36 @@ require File.expand_path('../../config/environment', __FILE__)
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'simplecov'
+SimpleCov.start 'rails'
+SimpleCov.configure do
+  minimum_coverage 90
+  minimum_coverage_by_file 90
+  add_group 'Services', 'app/services'
+  add_group 'Facades', 'app/facades'
+  add_group 'Serializers', 'app/serializers'
+end
+
+begin # hide folders from SimpleCov if we're not using them
+  default_lines = {
+    'mailers' => 4,
+    'channels' => 4,
+    'helpers' => 2,
+    'jobs' => 2
+  }
+
+  %w[mailers helpers jobs].each do |type|
+    files = Dir["./app/#{type}/**/*.rb"]
+    if files.count == 1 && File.read(files.first).each_line.count == default_lines[type]
+      SimpleCov.add_filter "app/#{type}"
+    end
+  end
+
+  files = Dir['./app/channels/**/*.rb']
+  if files.count == 2 && files.all?{|f| File.read(f).each_line.count == default_lines['channels']}
+    SimpleCov.add_filter 'app/channels'
+  end
+end
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
