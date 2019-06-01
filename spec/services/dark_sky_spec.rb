@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DarkSkyService do
+describe DarkSkyService, type: :service do
   it 'returns forecast for the requested location' do
     service = DarkSkyService.new
 
