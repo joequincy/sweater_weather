@@ -43,7 +43,7 @@ describe 'api/v1/forecasts' do
     expect(data[:week].count).to eq(5)
     day = data[:week].first
 
-    expect(day).to have_key(:day_name)
+    expect(day).to have_key(:day_start)
     expect(day).to have_key(:icon)
     expect(day).to have_key(:humidity)
     expect(day).to have_key(:high)

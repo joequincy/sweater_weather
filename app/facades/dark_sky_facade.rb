@@ -14,18 +14,18 @@ class DarkSkyFacade
   def today
     {
       current: currently_raw[:temperature],
-      feels_like: currently_raw[:apparent_temperature],
+      feels_like: currently_raw[:apparentTemperature],
       summary_now: currently_raw[:summary],
       icon_now: currently_raw[:icon],
       effective_time: currently_raw[:time],
-      high: today_raw[:temperature_high],
-      low: today_raw[:temperature_low],
+      high: today_raw[:temperatureHigh],
+      low: today_raw[:temperatureLow],
       summary: today_raw[:summary],
       icon: today_raw[:icon],
       location: {lat: raw_data[:latitude], lng: raw_data[:longitude]},
       humidity: currently_raw[:humidity],
       visibility: currently_raw[:visibility],
-      uv_index: currently_raw[:uv_index],
+      uv_index: currently_raw[:uvIndex],
       hourly: hourly
     }
   end
@@ -33,11 +33,11 @@ class DarkSkyFacade
   def week
     raw_data[:daily][:data].first(5).map do |day|
       {
-        day_name: day[:time],
+        day_start: day[:time],
         icon: day[:icon],
         humidity: day[:humidity],
-        high: day[:temperature_high],
-        low: day[:temperature_low]
+        high: day[:temperatureHigh],
+        low: day[:temperatureLow]
       }
     end
   end
