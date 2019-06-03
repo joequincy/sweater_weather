@@ -9,9 +9,16 @@ class Location < ApplicationRecord
   end
 
   def forecast
-    Rails.cache.fetch("#{city},#{state}",
+    Rails.cache.fetch("#{city},#{state}/forecast",
                       expires_in: time_till_hour) do
       api
+    end
+  end
+
+  def backgrounds
+    Rails.cache.fetch("#{city},#{state}/backgrounds",
+                      expires_in: 24.hours) do
+      BackgroundsFacade.get_list(latitude, longitude)
     end
   end
 
