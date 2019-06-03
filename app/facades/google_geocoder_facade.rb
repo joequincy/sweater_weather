@@ -7,7 +7,7 @@ class GoogleGeocoderFacade
 
   def self.coordinates(**args)
     f = new(**args)
-    [f.latitude, f.longitude]
+    [f.latitude, f.longitude, f.search_location]
   end
 
   def self.antipode_name(lat, lng)
@@ -22,6 +22,10 @@ class GoogleGeocoderFacade
     results[:results][0][:geometry][:location][:lng]
   end
 
+  def search_location
+    results[:results][0][:formatted_address]
+  end
+
   private
   attr_reader :city, :state, :other
 
@@ -30,6 +34,6 @@ class GoogleGeocoderFacade
   end
 
   def self.reverse(lat, lng)
-    @_revers ||= GoogleGeocoderService.reverse(lat, lng)
+    @_reverse ||= GoogleGeocoderService.reverse(lat, lng)
   end
 end
