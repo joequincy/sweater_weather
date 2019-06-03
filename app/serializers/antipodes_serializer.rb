@@ -1,13 +1,27 @@
+require 'json'
+
 class AntipodesSerializer
-  include FastJsonapi::ObjectSerializer
-  attribute :location_name do |location|
-    location.address
+  def initialize(location)
+    @forecast = location.antipode_forecast
+    @_output = {
+      data: [
+        {
+          id: 1,
+          type: "antipode",
+          attributes: {
+            location_name: location.address,
+            forecast: {
+              summary: @forecast.today[:summary],
+              current_temperature: @forecast.today[:current]
+            },
+          },
+          search_location: location.antipode
+        }
+      ]
+    }
   end
 
-  attribute :forecast do |api|
-    {
-      summary: api.today[:summary],
-      current_temperature: api.today[:current]
-    }
+  def to_json(*)
+    @_output.to_json
   end
 end
