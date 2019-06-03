@@ -1,5 +1,4 @@
 class Location < ApplicationRecord
-  has_many :forecasts
   before_create :populate_coords
 
   enum state: %i[AL AK AS AZ AR CA CO CT DE DC FL GA GU HI ID IL IN IA KS KY LA ME MD MH MA MI FM MN MS MO MT NE NV NH NJ NM NY NC ND MP OH OK OR PW PA PR RI SC SD TN TX UT VT VA VI WA WV WI WY]
@@ -10,7 +9,11 @@ class Location < ApplicationRecord
   end
 
   def forecast
-    api
+    Rails.cache.fetch("#{city},#{state}",
+                      expires_in: time_till_hour) do
+      api
+    end
+    # api
   end
 
   private
@@ -21,5 +24,10 @@ class Location < ApplicationRecord
 
   def populate_coords
     self.latitude, self.longitude = GoogleGeocoderFacade.coordinates(city, state)
+  end
+
+  def time_till_hour
+    t = Time.now
+    (60 - t.min).minutes + (60 - t.sec).seconds
   end
 end
