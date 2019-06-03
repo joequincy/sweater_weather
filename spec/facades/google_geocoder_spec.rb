@@ -14,4 +14,10 @@ describe GoogleGeocoderFacade, type: :facade do
     expect(g[0]).to be_within(0.5).of(39.7)
     expect(g[1]).to be_within(0.5).of(-105.0)
   end
+
+  it 'returns the name of an antipode' do
+    g = GoogleGeocoderFacade.antipode_name(-22.3193039, -65.8306389)
+
+    expect(g).to eq("Yavi Department, Jujuy, Argentina")
+  end
 end
