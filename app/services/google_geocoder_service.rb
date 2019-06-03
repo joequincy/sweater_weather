@@ -1,16 +1,12 @@
 class GoogleGeocoderService
-  def self.results(city, state)
+  def self.results(address)
     response = geocoder_api.get do |g|
-      g.params['address'] = address(city, state)
+      g.params['address'] = address
     end
     json(response)
   end
 
   private
-
-  def self.address(city, state)
-    "#{city},+#{state}"
-  end
 
   def self.json(response)
     JSON.parse(response.body, symbolize_names: true)
