@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe DarkSkyFacade, type: :facade do
+describe AmypodeFacade, type: :facade do
   it 'returns coordinates for the antipode of the requested location' do
     data = AmypodeFacade.coordinates(27, -82)
 

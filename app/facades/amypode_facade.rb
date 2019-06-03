@@ -8,6 +8,14 @@ class AmypodeFacade
     f = new(lat, lng)
     [f.latitude, f.longitude]
   end
+  
+  def latitude
+    results[:data][:attributes][:lat]
+  end
+
+  def longitude
+    results[:data][:attributes][:long]
+  end
 
   private
   attr_reader :lat, :lng

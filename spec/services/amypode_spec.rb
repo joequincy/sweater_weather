@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe GoogleGeocoderService, type: :service do
+describe AmypodeService, type: :service do
   it 'returns coordinates for the opposite side of the globe from a requested location' do
     lat = 27
     lng = -82
