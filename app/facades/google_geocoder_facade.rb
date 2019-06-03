@@ -10,6 +10,10 @@ class GoogleGeocoderFacade
     [f.latitude, f.longitude]
   end
 
+  def self.antipode_name(lat, lng)
+    reverse(lat, lng)[:results][0][:formatted_address]
+  end
+
   def latitude
     results[:results][0][:geometry][:location][:lat]
   end
@@ -23,5 +27,9 @@ class GoogleGeocoderFacade
 
   def results
     @_results ||= GoogleGeocoderService.results([city, state, other].compact.join(','))
+  end
+
+  def self.reverse(lat, lng)
+    @_revers ||= GoogleGeocoderService.reverse(lat, lng)
   end
 end
