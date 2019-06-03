@@ -13,7 +13,6 @@ class Location < ApplicationRecord
                       expires_in: time_till_hour) do
       api
     end
-    # api
   end
 
   private
