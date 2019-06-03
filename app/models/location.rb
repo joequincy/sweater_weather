@@ -9,6 +9,10 @@ class Location < ApplicationRecord
     find_or_create_by(city: city, state: state)
   end
 
+  def self.by_antipode(location)
+    find_or_create_by(address: location)
+  end
+
   def forecast
     api
   end
@@ -21,5 +25,9 @@ class Location < ApplicationRecord
 
   def populate_coords
     self.latitude, self.longitude = GoogleGeocoderFacade.coordinates(city: city, state: state)
+  end
+
+  def antipode_coords
+    self.latitude, self.longitude = AmypodeFacade.coordinates(latitude, longitude)
   end
 end
