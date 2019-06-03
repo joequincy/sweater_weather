@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'api/v1/backgrounds' do
-  it 'returns background image URL for the requested location' do
+  it 'returns 5 background images with URLs for the requested location' do
     headers = {
       "ACCEPT" => "application/json",
       "CONTENT_TYPE" => "application/json"
@@ -11,8 +11,12 @@ describe 'api/v1/backgrounds' do
     expect(response.content_type).to eq('application/json')
     expect(response).to have_http_status(:ok)
 
-    data = JSON.parse(response.body, symbolize_names: true)[:data][:attributes]
-    # binding.pry
-    expect(data).to have_key(:url)
+    data = JSON.parse(response.body, symbolize_names: true)[:data]
+    expect(data.count).to eq(5)
+
+    sample = data.first[:attributes]
+    expect(sample).to have_key(:url)
+    expect(sample).to have_key(:height)
+    expect(sample).to have_key(:width)
   end
 end
