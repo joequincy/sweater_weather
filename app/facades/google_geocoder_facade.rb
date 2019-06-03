@@ -1,11 +1,11 @@
 class GoogleGeocoderFacade
-  def initialize(city, state)
+  def initialize(city: nil, state: nil)
     @city = city
     @state = state
   end
 
-  def self.coordinates(city, state)
-    f = new(city, state)
+  def self.coordinates(**args)
+    f = new(**args)
     [f.latitude, f.longitude]
   end
 

@@ -20,6 +20,6 @@ class Location < ApplicationRecord
   end
 
   def populate_coords
-    self.latitude, self.longitude = GoogleGeocoderFacade.coordinates(city, state)
+    self.latitude, self.longitude = GoogleGeocoderFacade.coordinates(city: city, state: state)
   end
 end
