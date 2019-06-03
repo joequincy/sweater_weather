@@ -1,7 +1,8 @@
 class GoogleGeocoderFacade
-  def initialize(city: nil, state: nil)
+  def initialize(city: nil, state: nil, other: nil)
     @city = city
     @state = state
+    @other = other.gsub(' ', '+') if other
   end
 
   def self.coordinates(**args)
@@ -18,9 +19,9 @@ class GoogleGeocoderFacade
   end
 
   private
-  attr_reader :city, :state
+  attr_reader :city, :state, :other
 
   def results
-    @_results ||= GoogleGeocoderService.results(city, state)
+    @_results ||= GoogleGeocoderService.results([city, state, other].compact.join(','))
   end
 end
