@@ -29,5 +29,7 @@ class Location < ApplicationRecord
 
   def antipode_coords
     self.latitude, self.longitude = AmypodeFacade.coordinates(latitude, longitude)
+    self.antipode = GoogleGeocoderFacade.antipode_name(latitude, longitude)
+    self.save
   end
 end
