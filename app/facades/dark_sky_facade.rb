@@ -1,13 +1,10 @@
 class DarkSkyFacade
-  attr_reader :address
-
-  def initialize(raw_data, address)
+  def initialize(raw_data)
     @raw_data = raw_data
-    @address = address
   end
 
-  def self.new_forecast(lat, lng, address)
-    new(service.forecast(lat,lng), address)
+  def self.new_forecast(lat, lng)
+    new(service.forecast(lat,lng))
   end
 
   def id

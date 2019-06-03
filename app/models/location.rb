@@ -13,11 +13,11 @@ class Location < ApplicationRecord
 
   def self.by_antipode(location)
     skip_callback :create, :before, :populate_coords!
-    set_callback :create, :before, :antipode_coords!
     find_or_create_by(address: location)
   end
 
   def antipode_forecast
+    antipode_coords!
     api
   end
 
@@ -28,7 +28,7 @@ class Location < ApplicationRecord
   private
 
   def api
-    @_api ||= DarkSkyFacade.new_forecast(latitude, longitude, address)
+    @_api ||= DarkSkyFacade.new_forecast(latitude, longitude)
   end
 
   def populate_coords!
