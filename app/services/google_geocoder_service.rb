@@ -6,6 +6,13 @@ class GoogleGeocoderService
     json(response)
   end
 
+  def self.reverse(lat, lng)
+    response = geocoder_api.get do |g|
+      g.params['latlng'] = "#{lat},#{lng}"
+    end
+    json(response)
+  end
+
   private
 
   def self.json(response)
