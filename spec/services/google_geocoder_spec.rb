@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe GoogleGeocoderService, type: :service do
   it 'returns data for the requested location' do
-    g = GoogleGeocoderService.results('denver', 'co')
+    g = GoogleGeocoderService.results('denver,+co')
 
     expect(g).to be_a(Hash)
 
