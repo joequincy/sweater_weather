@@ -11,7 +11,7 @@ describe 'api/v1/antipode' do
     expect(response.content_type).to eq('application/json')
     expect(response).to have_http_status(:ok)
 
-    data = JSON.parse(response.body, symbolize_names: true)[:data]
+    data = JSON.parse(response.body, symbolize_names: true)[:data].first
 
     expect(data).to have_key(:search_location)
     expect(data[:search_location]).to eq("Hong Kong")
