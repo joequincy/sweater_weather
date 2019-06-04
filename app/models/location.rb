@@ -8,6 +8,11 @@ class Location < ApplicationRecord
     find_or_create_by(city: city.titleize, state: state.upcase)
   end
 
+  def self.find_by_query(location)
+    city, state = location.split(/, ?/)
+    find_by(city: city.titleize, state: state.upcase)
+  end
+
   def forecast
     Rails.cache.fetch("#{city},#{state}/forecast",
                       expires_in: time_till_hour) do
