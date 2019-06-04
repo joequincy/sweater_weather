@@ -13,10 +13,19 @@ class Api::V1::FavoritesController < Api::V1::BaseController
   def create
     user = User.find_by(api_key: params[:api_key])
     if user
-      city, state = params[:location].split(", ")
-      location = Location.find_or_create_by(city: city, state: state)
+      location = Location.query(params[:location])
       something = user.favorites << location
       render status: 201, json: { success: "#{params[:location]} added as favorite"}
+    else
+      invalid_api_key
+    end
+  end
+
+  def destroy
+    user = User.find_by(api_key: params[:api_key])
+    if user
+      user.favorites.delete(Location.find_by_query(params[:location]))
+      render status: 200, json: { success: "#{params[:location]} removed from favorites"}
     else
       invalid_api_key
     end
