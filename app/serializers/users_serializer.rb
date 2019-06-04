@@ -9,6 +9,12 @@ class UsersSerializer
     }
   end
 
+  def self.invalid
+    {
+      error: "invalid email or password"
+    }
+  end
+
   def to_json
     {
       api_key: user.api_key

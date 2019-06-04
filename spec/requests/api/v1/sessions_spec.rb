@@ -36,7 +36,7 @@ describe 'api/v1/sessions' do
 
     data = JSON.parse(response.body, symbolize_names: true)
     expect(data).to have_key(:error)
-    expect(data[:error].length).to eq("invalid email or password")
+    expect(data[:error]).to eq("invalid email or password")
   end
 
   it 'rejects an invalid login attempt (email)' do
@@ -55,6 +55,6 @@ describe 'api/v1/sessions' do
 
     data = JSON.parse(response.body, symbolize_names: true)
     expect(data).to have_key(:error)
-    expect(data[:error].length).to eq("invalid email or password")
+    expect(data[:error]).to eq("invalid email or password")
   end
 end
