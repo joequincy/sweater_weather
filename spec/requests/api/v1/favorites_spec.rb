@@ -37,6 +37,27 @@ describe 'api/v1/favorites' do
     expect(response).to have_http_status(:unauthorized)
 
     body = JSON.parse(response.body, symbolize_names: true)
+    expect(body[:error]).to eq("requires api key")
+
+    denver = Location.find_by(city: "Denver", state: "CO")
+    expect(denver).to be_nil
+  end
+
+  it 'refuses to add a favorite city with an invalid api key' do
+    user = User.create(email: 'whatever@example.com', password: 'password')
+    headers = {
+      "ACCEPT" => "application/json",
+      "CONTENT_TYPE" => "application/json"
+    }
+    post '/api/v1/favorites',
+         params: { location: "Denver, CO",
+                   api_key: "there is NO. RULE. SIX." }.to_json,
+         headers: headers
+
+    expect(response.content_type).to eq('application/json')
+    expect(response).to have_http_status(:unauthorized)
+
+    body = JSON.parse(response.body, symbolize_names: true)
     expect(body[:error]).to eq("invalid api key")
 
     denver = Location.find_by(city: "Denver", state: "CO")
