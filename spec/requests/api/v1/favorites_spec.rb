@@ -71,11 +71,12 @@ describe 'api/v1/favorites' do
       expect(response).to have_http_status(:ok)
 
       body = JSON.parse(response.body, symbolize_names: true)
+
       expect(body.first[:location]).to eq("Denver, CO")
       expect(body.first).to have_key(:current_weather)
       #format of current_weather TBD - for now assume same return as /forecast
-      expect(body.first[:current_weather]).to have_key(:today)
-      expect(body.first[:current_weather]).to have_key(:week)
+      expect(body.first[:current_weather][:data][:attributes]).to have_key(:today)
+      expect(body.first[:current_weather][:data][:attributes]).to have_key(:week)
     end
 
     it 'refuses to return favorites without an api key' do
