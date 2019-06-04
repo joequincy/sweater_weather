@@ -6,7 +6,7 @@ class Api::V1::FavoritesController < Api::V1::BaseController
     if user
       render status: 200, json: FavoritesSerializer.new(user.favorites)
     else
-      render status: 401, json: { error: "invalid api key" }
+      invalid_api_key
     end
   end
 
@@ -18,7 +18,7 @@ class Api::V1::FavoritesController < Api::V1::BaseController
       something = user.favorites << location
       render status: 201, json: { success: "#{params[:location]} added as favorite"}
     else
-      render status: 401, json: { error: "invalid api key" }
+      invalid_api_key
     end
   end
 
@@ -26,5 +26,9 @@ class Api::V1::FavoritesController < Api::V1::BaseController
 
   def require_api_key
     render status: 401, json: { error: "requires api key" } unless params[:api_key]
+  end
+
+  def invalid_api_key
+    render status: 401, json: { error: "invalid api key" }
   end
 end
