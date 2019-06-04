@@ -34,6 +34,9 @@ describe 'api/v1/favorites' do
     expect(response.content_type).to eq('application/json')
     expect(response).to have_http_status(:unathorized)
 
+    body = JSON.parse(response.body, symbolize_names: true)
+    expect(body[:error]).to eq("invalid api key")
+
     denver = Location.find_by(city: "Denver", state: "CO")
     expect(denver).to be_nil
   end
