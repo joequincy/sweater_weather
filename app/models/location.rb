@@ -4,8 +4,8 @@ class Location < ApplicationRecord
   enum state: %i[AL AK AS AZ AR CA CO CT DE DC FL GA GU HI ID IL IN IA KS KY LA ME MD MH MA MI FM MN MS MO MT NE NV NH NJ NM NY NC ND MP OH OK OR PW PA PR RI SC SD TN TX UT VT VA VI WA WV WI WY]
 
   def self.query(location)
-    city, state = location.upcase.split(",")
-    find_or_create_by(city: city, state: state)
+    city, state = location.split(/, ?/)
+    find_or_create_by(city: city.titleize, state: state.upcase)
   end
 
   def forecast
