@@ -15,6 +15,9 @@ describe 'api/v1/favorites' do
     expect(response.content_type).to eq('application/json')
     expect(response).to have_http_status(:created)
 
+    body = JSON.parse(response.body, symbolize_names: true)
+    expect(body[:success]).to eq("Denver, CO added as favorite")
+
     user.reload
     denver = Location.find_by(city: "Denver", state: "CO")
     expect(user.favorites).to include(denver)
@@ -27,12 +30,11 @@ describe 'api/v1/favorites' do
       "CONTENT_TYPE" => "application/json"
     }
     post '/api/v1/favorites',
-         params: { location: "Denver, CO",
-                   api_key: user.api_key }.to_json,
+         params: { location: "Denver, CO" }.to_json,
          headers: headers
 
     expect(response.content_type).to eq('application/json')
-    expect(response).to have_http_status(:unathorized)
+    expect(response).to have_http_status(:unauthorized)
 
     body = JSON.parse(response.body, symbolize_names: true)
     expect(body[:error]).to eq("invalid api key")
