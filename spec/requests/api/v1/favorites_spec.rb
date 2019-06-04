@@ -102,4 +102,49 @@ describe 'api/v1/favorites' do
       expect(body[:error]).to eq("invalid api key")
     end
   end
+
+  describe 'DELETE' do
+    it 'deletes a location from the user\'s favorites' do
+      denver = Location.query('Denver, CO')
+      boulder = Location.query('Boulder, CO')
+      user.favorites << denver
+      user.favorites << boulder
+
+      delete '/api/v1/favorites',
+          params: { location: 'Denver, CO',
+                    api_key: user.api_key }.to_json,
+          headers: headers
+
+      expect(response.content_type).to eq('application/json')
+      expect(response).to have_http_status(:ok)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body[:success]).to eq("Denver, CO was removed from favorites")
+    end
+
+    it 'refuses to delete favorites without an api key' do
+      delete '/api/v1/favorites',
+          params: { location: 'Denver, CO' },
+          headers: headers
+
+      expect(response.content_type).to eq('application/json')
+      expect(response).to have_http_status(:unauthorized)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body[:error]).to eq("requires api key")
+    end
+
+    it 'refuses to delete favorites with an invalid api key' do
+      delete '/api/v1/favorites',
+          params: { location: 'Denver, CO',
+                    api_key: "there is NO. RULE. SIX." },
+          headers: headers
+
+      expect(response.content_type).to eq('application/json')
+      expect(response).to have_http_status(:unauthorized)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body[:error]).to eq("invalid api key")
+    end
+  end
 end
