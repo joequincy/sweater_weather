@@ -64,7 +64,7 @@ describe 'api/v1/favorites' do
       user.favorites << boulder
 
       get '/api/v1/favorites',
-          params: { api_key: user.api_key }.to_json,
+          params: { api_key: user.api_key },
           headers: headers
 
       expect(response.content_type).to eq('application/json')
@@ -84,15 +84,21 @@ describe 'api/v1/favorites' do
 
       expect(response.content_type).to eq('application/json')
       expect(response).to have_http_status(:unauthorized)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body[:error]).to eq("requires api key")
     end
 
-    it 'refuses to return favorites without an api key' do
+    it 'refuses to return favorites with an invalid api key' do
       get '/api/v1/favorites',
-          params: { api_key: "there is NO. RULE. SIX." }.to_json,
+          params: { api_key: "there is NO. RULE. SIX." },
           headers: headers
 
       expect(response.content_type).to eq('application/json')
       expect(response).to have_http_status(:unauthorized)
+
+      body = JSON.parse(response.body, symbolize_names: true)
+      expect(body[:error]).to eq("invalid api key")
     end
   end
 end
