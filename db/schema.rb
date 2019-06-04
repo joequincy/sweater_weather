@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_04_014215) do
+ActiveRecord::Schema.define(version: 2019_06_04_160711) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,6 +36,15 @@ ActiveRecord::Schema.define(version: 2019_06_04_014215) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "user_favorites", force: :cascade do |t|
+    t.bigint "user_id"
+    t.bigint "favorite_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["favorite_id"], name: "index_user_favorites_on_favorite_id"
+    t.index ["user_id"], name: "index_user_favorites_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email"
     t.string "password_digest"
@@ -45,4 +54,6 @@ ActiveRecord::Schema.define(version: 2019_06_04_014215) do
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "user_favorites", "locations", column: "favorite_id"
+  add_foreign_key "user_favorites", "users"
 end
