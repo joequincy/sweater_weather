@@ -124,7 +124,7 @@ describe 'api/v1/favorites' do
 
     it 'refuses to delete favorites without an api key' do
       delete '/api/v1/favorites',
-          params: { location: 'Denver, CO' },
+          params: { location: 'Denver, CO' }.to_json,
           headers: headers
 
       expect(response.content_type).to eq('application/json')
@@ -137,7 +137,7 @@ describe 'api/v1/favorites' do
     it 'refuses to delete favorites with an invalid api key' do
       delete '/api/v1/favorites',
           params: { location: 'Denver, CO',
-                    api_key: "there is NO. RULE. SIX." },
+                    api_key: "there is NO. RULE. SIX." }.to_json,
           headers: headers
 
       expect(response.content_type).to eq('application/json')
