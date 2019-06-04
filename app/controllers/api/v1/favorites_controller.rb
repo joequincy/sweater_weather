@@ -25,7 +25,7 @@ class Api::V1::FavoritesController < Api::V1::BaseController
     user = User.find_by(api_key: params[:api_key])
     if user
       user.favorites.delete(Location.find_by_query(params[:location]))
-      render status: 200, json: { success: "#{params[:location]} removed from favorites"}
+      render status: 200, json: { success: "#{params[:location]} was removed from favorites"}
     else
       invalid_api_key
     end
